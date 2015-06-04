@@ -6,7 +6,6 @@ Smart Citizen Kit firmware for SD
 **Smart Citizen Kit SD firmware version for the Ambient Sensor Board SCK 1.1.**
 
 This firmware shows how to log data in off-line mode, without internet connectivity and how to read these values. 
-Moreover, we explain how can introduce 2 or more bytes in serial port (serial port only accepts 1 byte).
 
 This firmware is a part of a UOC project called "Design and implementation of a sensors calibration system for Smart Citizen Kit" 
 
