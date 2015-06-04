@@ -1,0 +1,89 @@
+#include <SPI.h>
+#include <SD.h>  
+  
+//Inclouem les llibreries, SPI.h per la comunicació amb la placa i SD.h per la tarja SD
+
+File dades_ref;  
+
+//Creem l'arxiu dades_ref on escriurem les dades de referència
+  
+void setup()  
+{  
+ // Obrim la comunicació serial amb el port 9600
+  Serial.begin(9600);  
+   while (!Serial) {  
+    ;
+    // Esperem que s'estableixi la comunicació
+  }  
+  
+  Serial.print("Inicialitzant la tarja SD...");  
+ 
+   pinMode(10, OUTPUT);  
+   digitalWrite(10,HIGH);  
+    // Utilitzem el pin 10 com a sortida CS   
+  if (!SD.begin(11)) {  
+    // El pin 11 es el de la SD i li diem que arranqui
+    Serial.println("Errada al inicializar!");  
+    return;  
+  }  
+  Serial.println("SD carregada correctament");  
+    
+ 
+  dades_ref = SD.open("dades.txt", FILE_WRITE);  
+  // Obrim el fitxer dades_ref i creem l'arxiu dades.txt a dins 
+  
+  // Comprovem si el fitxer s'obre correctament   
+  if (dades_ref) {  
+    Serial.print("Escrivint a la SD...");  
+     dades_ref.println("PUNTS REFERENCIA NO2 AMB Ro= 10 KOHMS '\n' Rs/Ro______________ppb '\n'");  
+     dades_ref.println("1__________________0 '\n' ");  
+     dades_ref.println("3__________________10 '\n' "); 
+     dades_ref.println("5__________________20 '\n' "); 
+     dades_ref.println("8__________________40 '\n' "); 
+     dades_ref.println("15_________________70 '\n' "); 
+     dades_ref.println("30_________________100 '\n' "); 
+     dades_ref.println("45_________________200 '\n' "); 
+     dades_ref.println("60_________________400 '\n' "); 
+     dades_ref.println("75_________________600 '\n' "); 
+     dades_ref.println("90_________________800 '\n' "); 
+     
+      dades_ref.println("PUNTS REFERENCIA CO AMB Ro= 5 KOHMS '\n' Rs/Ro______________ppm '\n'"); 
+     dades_ref.println("1__________________0 '\n' ");  
+     dades_ref.println("0.86_______________1 '\n' "); 
+     dades_ref.println("0.76_______________2 '\n' "); 
+     dades_ref.println("0.64_______________5 '\n' "); 
+     dades_ref.println("0.5________________10 '\n' "); 
+     dades_ref.println("0.3________________20 '\n' "); 
+     dades_ref.println("0.2________________50 '\n' "); 
+     dades_ref.println("0.16_______________100 '\n' "); 
+     dades_ref.println("0.12_______________200 '\n' "); 
+     dades_ref.println("0.1________________300 '\n' "); 
+    // Tanquem el fitxer  
+    dades_ref.close();  
+    Serial.println("Tot correcte.");  
+    
+  } else {  
+    Serial.println("Error al obrir dades.txt");  
+  }  
+    
+  //Llegim l'arxiu
+  
+  dades_ref = SD.open("dades.txt");  
+  if (dades_ref) {  
+    Serial.println("dades.txt:");  
+      
+      //Comprovem si esta disponible
+    while (dades_ref.available()) {  
+        Serial.write(dades_ref.read());  
+    }  
+    // Tanquem el fitxer
+    dades_ref.close();  
+  } else {  
+    Serial.println("Error obrint dades.txt");  
+  }  
+}  
+  
+void loop()  
+{  
+      
+}  
