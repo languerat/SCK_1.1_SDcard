@@ -1,3 +1,9 @@
+// Aquest programa explica com gravar dades en una SD a Arduino i despres llegirles. 
+// Es part del projecte "Disseny e implementació d'un sistema de calibracio per Smart Citizen KIT"
+// Autor: Lluis Anguera, estudiant de la UOC
+
+
+
 #include <SPI.h>
 #include <SD.h>  
   
