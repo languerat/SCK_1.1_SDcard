@@ -1,0 +1,169 @@
+// Aquest programa determina els punts d'una corba de calibracio de CO, un cop introduides les dades RS i Ro.
+// Es part del projecte "Disseny e implementació d'un sistema de calibracio per Smart Citizen KIT"
+// Autor: Lluis Anguera, estudiant de la UOC
+
+
+
+//Definim les variables de treball. En aquest cas no necessitem llibreries.
+
+float Byte0,Byte1,Byte2,Rs_Ro,difCO,a;
+
+
+void setup() {
+ 
+// Obrim la comunicacio Serial a 9600 baudis de velocitat
+Serial.begin(9600);
+while (!Serial){
+  ;
+  
+   // Esperem que s'estableixi la comunicacio
+  }
+ 
+ Serial.print ("Introdueix un valor Rs/Ro de CO ");
+
+}
+
+ 
+void loop() { 
+
+  // Observem si s'han introduit dades pel serial
+  
+  if(Serial.available()>0) {
+    
+   // En cas afirmatiu llegim 3 entrades
+  Byte0 = Serial.read();
+  Byte1 = Serial.read();
+  Byte2 = Serial.read();
+  
+  Serial.print('\n');
+ Serial.print ("La Rs/Ro introduida es ");
+
+ // Condicions amb una sola entrada
+ 
+  if (Byte0>0 && Byte1<0) { 
+    
+ //EL valor d'entrada es mostra en codi ASCII,
+// per pasar-ho a decimal li restem 48 i ho emmagatzemem a la variable Rs_Ro
+
+   Rs_Ro = Byte0-48;
+  Serial.print(Rs_Ro);
+  Serial.print('\n');
+    if (Rs_Ro==1) {
+     Serial.print("Correspon a una concentracio air zero"); 
+     Serial.print('\n');
+     
+     //El valor a, correspon al valor de refernecia en aquest punt
+     
+    a=1;
+    }
+    
+   if (Rs_Ro!=1) {
+   Serial.print("Aquest valor es incorrecte per aquest gas!!"); 
+    Serial.print('\n');
+    a=1;
+    }
+  }
+  
+ //**************************
+  
+  //Condicions amb tres entrades. Recordem que si es vol entrar un 0.5, s'ha d'introduir 050.
+  
+    if (Byte2>0) { 
+
+  Rs_Ro = (Byte0-48) + (Byte1-48)/10 + (Byte2-48)/100 ;
+  Serial.print(Rs_Ro);
+  Serial.print('\n');
+  if (Rs_Ro>0.72 && Rs_Ro<1) {
+   Serial.print("Correspon a una concentracio de 1 ppm"); 
+    Serial.print('\n');
+    a=0.72;
+    }
+    
+  if (Rs_Ro<=0.72 && Rs_Ro>0.68) {
+   Serial.print("Correspon a una concentracio de 1 ppm"); 
+    Serial.print('\n');
+    a=0.72;
+    }
+    
+      if (Rs_Ro<=0.68 && Rs_Ro>0.63) {
+   Serial.print("Correspon a una concentracio d'uns 2 ppm"); 
+    Serial.print('\n');
+    a=0.68;
+    }
+    
+   if (Rs_Ro<=0.63 && Rs_Ro>0.58) {
+   Serial.print("Correspon a una concentracio d'uns 5 ppm"); 
+    Serial.print('\n');
+    a=0.63;
+    }
+    
+     if (Rs_Ro<=0.58 && Rs_Ro>0.5) {
+   Serial.print("Correspon a una concentracio d'uns 10 ppm"); 
+    Serial.print('\n');
+    a=0.58;
+    }
+    
+     if (Rs_Ro<=0.5 && Rs_Ro>0.35) {
+   Serial.print("Correspon a una concentracio d'uns 20 ppm"); 
+    Serial.print('\n');
+    a=0.5;
+    }
+    
+     if (Rs_Ro<=0.35 && Rs_Ro>0.25) {
+   Serial.print("Correspon a una concentracio d'uns 50 ppm (ALTA CONCENTRACIO)"); 
+    Serial.print('\n');
+    a=0.35;
+    }
+    
+     if (Rs_Ro<=0.25) {
+   Serial.print("Correspon a una concentracio d'uns 100 ppm (ALTA CONCENTRACIO)"); 
+    Serial.print('\n');
+    a=0.25;
+    }
+    }
+    
+    //Calcul dels punts de la corba
+    
+ Serial.print('\n');
+ Serial.print ("Calculant punts...");
+ delay(1000);
+ Serial.print('\n');
+ Serial.print('\n');   
+ Serial.print("PUNTS CORBA CO: ");
+ Serial.print('\n');
+ Serial.print("Rs/Ro");
+ Serial.print('\n');
+ 
+   //Comparem el valor Rs/Ro introduit amb la referencia i el guardem a la variable dif.
+ difCO = Rs_Ro/a;
+ Serial.print("1.00");
+ Serial.print("----------0 ppm");
+ Serial.print('\n');
+ Serial.print(difCO*0.72);
+ Serial.print("----------1 ppm");
+ Serial.print('\n');
+ Serial.print(difCO*0.68);
+ Serial.print("----------2 ppm");
+ Serial.print('\n');
+ Serial.print(difCO*0.63);
+ Serial.print("----------5 ppm");
+ Serial.print('\n');
+ Serial.print(difCO*0.58);
+ Serial.print("---------10 ppm");
+ Serial.print('\n');
+ Serial.print(difCO*0.5);
+ Serial.print("---------20 ppm");
+ Serial.print('\n');
+ Serial.print(difCO*0.35);
+ Serial.print("---------50 ppm");
+ Serial.print('\n');
+ Serial.print(difCO*0.25);
+ Serial.print("---------100 ppm");
+ Serial.print('\n');
+       
+    }
+}
+ 
+  
+
+ 
