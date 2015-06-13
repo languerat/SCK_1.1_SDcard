@@ -15,7 +15,7 @@ File dades_ref;
   
 void setup()  
 {  
- // Obrim la comunicació serial amb el port 9600
+ // Obrim la comunicació serial a 9600 baudis de velocitat.
   Serial.begin(9600);  
    while (!Serial) {  
     ;
